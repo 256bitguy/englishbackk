@@ -8,7 +8,7 @@ export class UserMail extends Mailer {
       await this.mailer.send({
         template: 'signUp',
         message: {
-          from: '"Sign Up" <no-replay@example.com>',
+          from: '"Sign Up" <67vivekraj@gmail.com>',
           to: email,
           subject: 'Sign Up'
         }

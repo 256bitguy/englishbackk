@@ -35,8 +35,8 @@ export const authController = {
   ) => {
     try {
       const user = await userService.getByEmail(email)
-
       const comparePassword = user?.comparePassword(password)
+      // console.log(user, comparePassword)
       if (!user || !comparePassword) {
         return res.status(StatusCodes.NOT_FOUND).json({
           message: ReasonPhrases.NOT_FOUND,
@@ -44,10 +44,10 @@ export const authController = {
         })
       }
 
-      const { accessToken } = jwtSign(user.id)
+      // const { accessToken } = jwtSign(user.id)
 
       return res.status(StatusCodes.OK).json({
-        data: { accessToken },
+        data: { dfghj: 'sdfghjk' },
         message: ReasonPhrases.OK,
         status: StatusCodes.OK
       })
@@ -79,35 +79,27 @@ export const authController = {
       session.startTransaction()
       const hashedPassword = await createHash(password)
 
-      const user = await userService.create(
-        {
-          email,
-          password: hashedPassword
-        },
-        session
-      )
+      const user = await userService.create({
+        email,
+        password: hashedPassword
+      })
 
       const cryptoString = createCryptoString()
 
       const dateFromNow = createDateAddDaysFromNow(ExpiresInDays.Verification)
 
-      const verification = await verificationService.create(
-        {
-          userId: user.id,
-          email,
-          accessToken: cryptoString,
-          expiresIn: dateFromNow
-        },
-        session
-      )
+      const verification = await verificationService.create({
+        userId: user.id,
+        email,
+        accessToken: cryptoString,
+        expiresIn: dateFromNow
+      })
+      console.log(verification, 'verification')
 
-      await userService.addVerificationToUser(
-        {
-          userId: user.id,
-          verificationId: verification.id
-        },
-        session
-      )
+      await userService.addVerificationToUser({
+        userId: user.id,
+        verificationId: verification.id
+      })
 
       const { accessToken } = jwtSign(user.id)
 

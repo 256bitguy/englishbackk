@@ -144,8 +144,8 @@ export const userService = {
     if (session) {
       options = { session }
     }
-
     const user = await User.findOne({ _id: userId }, null, options)
+    console.log(user)
 
     if (user) {
       if (!user.verifications) {

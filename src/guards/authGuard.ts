@@ -25,6 +25,7 @@ export const authGuard = {
     next: NextFunction
   ) => {
     if (!user) {
+      console.log(user)
       return next()
     }
 
