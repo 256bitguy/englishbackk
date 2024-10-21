@@ -17,8 +17,8 @@ export interface IUser {
   id: ObjectId
   email: string
   password: string
-  firstName?: string
-  lastName?: string
+  firstName: string
+  lastName: string
   verified: boolean
   verifications?: ObjectId[]
   resetPasswords?: ObjectId[]

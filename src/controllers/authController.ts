@@ -44,10 +44,10 @@ export const authController = {
         })
       }
 
-      // const { accessToken } = jwtSign(user.id)
+      const { accessToken } = jwtSign(user.id)
 
       return res.status(StatusCodes.OK).json({
-        data: { dfghj: 'sdfghjk' },
+        data: accessToken,
         message: ReasonPhrases.OK,
         status: StatusCodes.OK
       })
@@ -62,7 +62,9 @@ export const authController = {
   },
 
   signUp: async (
-    { body: { email, password } }: IBodyRequest<SignUpPayload>,
+    {
+      body: { email, password, firstName, lastName }
+    }: IBodyRequest<SignUpPayload>,
     res: Response
   ) => {
     const session = await startSession()
@@ -81,7 +83,9 @@ export const authController = {
 
       const user = await userService.create({
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        firstName,
+        lastName
       })
 
       const cryptoString = createCryptoString()
@@ -94,20 +98,20 @@ export const authController = {
         accessToken: cryptoString,
         expiresIn: dateFromNow
       })
-      console.log(verification, 'verification')
 
       await userService.addVerificationToUser({
         userId: user.id,
         verificationId: verification.id
       })
 
-      const { accessToken } = jwtSign(user.id)
+      // const { accessToken } = jwtSign(user._id)
+      // console.log(accessToken, 'accessToken')
 
       const userMail = new UserMail()
 
-      userMail.signUp({
-        email: user.email
-      })
+      // userMail.signUp({
+      //   email: user.email
+      // })
 
       userMail.verification({
         email: user.email,
@@ -118,7 +122,7 @@ export const authController = {
       session.endSession()
 
       return res.status(StatusCodes.OK).json({
-        data: { accessToken },
+        data: { firstName },
         message: ReasonPhrases.OK,
         status: StatusCodes.OK
       })

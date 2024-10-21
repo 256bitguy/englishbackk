@@ -7,10 +7,14 @@ export const userService = {
     {
       email,
       password,
+      firstName,
+      lastName,
       verified = false
     }: {
       email: string
       password: string
+      firstName: string
+      lastName: string
       verified?: boolean
     },
     session?: ClientSession
@@ -18,6 +22,8 @@ export const userService = {
     new User({
       email,
       password,
+      firstName,
+      lastName,
       verified
     }).save({ session }),
 
@@ -145,7 +151,7 @@ export const userService = {
       options = { session }
     }
     const user = await User.findOne({ _id: userId }, null, options)
-    console.log(user)
+    // console.log(user)
 
     if (user) {
       if (!user.verifications) {
